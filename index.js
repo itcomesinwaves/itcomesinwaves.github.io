@@ -63,7 +63,7 @@ $('.btn-styled').on('click', (e) => {
   const $newTweed = $('<div></div>').addClass(`newTweed`)
   const result = `@${tweed.user}: ${tweed.message}`;
 
-  $newTweed.text(result).append(` | posted: ${moment().startOf('hour').fromNow()}`)
+  $newTweed.text(result).append(` | posted: ${moment().startOf('minute').fromNow()}`)
   $bodyDiv.prepend($newTweed);
   return $newTweed;
  
