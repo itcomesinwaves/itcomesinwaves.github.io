@@ -10,7 +10,7 @@ $(document).ready(() => {
    //$('.tweetdiv').append(` posted: ${moment().format('LLL')}`);
     const text = `@${tweet.user}: ${tweet.message}`;
 
-    $tweet.text(text).append(` | posted: ${moment().startOf('hour').fromNow()}`)
+    $tweet.text(text).append(` | posted: ${moment().startOf('minute').fromNow()}`)
 
     $bodyDiv.prepend($tweet)
     return $tweet;
@@ -123,7 +123,7 @@ $('#button2').on('click', (event) => {
 
   const $newITweed = $('<div></div>').addClass(`newTweed`);
   const result = `@${tweed.user}: ${tweed.message}`;
-  $newITweed.text(result).append(` | posted: ${moment().startOf('hour').fromNow()}`)
+  $newITweed.text(result).append(` | posted: ${moment().startOf('minute').fromNow()}`)
   console.log(tweed);
 //window.visitor = user; 
 //writeTweet(tweed);
