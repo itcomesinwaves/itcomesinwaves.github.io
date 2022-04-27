@@ -10,13 +10,15 @@ $(document).ready(() => {
    //$('.tweetdiv').append(` posted: ${moment().format('LLL')}`);
     const text = `@${tweet.user}: ${tweet.message}`;
 
-    $tweet.text(text).append(` posted: ${moment().format('LLL')}`);
+    $tweet.text(text).append(` | posted: ${moment().startOf('hour').fromNow()}`)
 
+    $bodyDiv.prepend($tweet)
     return $tweet;
   });
  // $tweet.append(` posted: ${moment().format('LLL')}`);
  // $('.tweetdiv').append(moment().format('LTS'));
-  $bodyDiv.append($tweets)
+  //$bodyDiv.append($tweets)
+  //$tweets.insertAfer($p1);
   // const $newRandomTweets = streams.home.map((tweets) => {
   //   const $name = $('<div></div>').addClass('nameDiv');
   //   const $message = $('<div></div>').addClass('message');
@@ -61,14 +63,16 @@ $('.btn-styled').on('click', (e) => {
   const $newTweed = $('<div></div>').addClass(`newTweed`)
   const result = `@${tweed.user}: ${tweed.message}`;
 
-  $newTweed.text(result);
+  $newTweed.text(result).append(` | posted: ${moment().startOf('hour').fromNow()}`)
+  $bodyDiv.prepend($newTweed);
   return $newTweed;
  
 });
 
 // dates 
-$bodyDiv.append($newTweeds);
-$('.newTweed').append(` posted: ${moment().format('llll')}`);
+//$newTweeds.insertAfer($p1);
+//$bodyDiv.append($newTweeds);
+//$('.newTweed').append(` | posted: ${moment().startOf('hour').fromNow()}`);
 })
  // add input username form and submit button to store 
 //  const $formUser = $('<form></form>').attr('id', 'form-user');
@@ -112,13 +116,24 @@ console.log(user);
 //add funcitonality to the click for tweeds inputs and then after concantenating with the user, store it into a tweeed var then pass it in to the writeTweet function
 $('#button2').on('click', (event) => {
   event.preventDefault();
-  var tweed = $( "#form :input" ).first().val();
+  window.visitor = user;
+  var tweedInput = $( "#form :input" ).first().val();
+  writeTweet(tweedInput);
+  const $newITweeds =  streams.home.map((tweed) => {
+
+  const $newITweed = $('<div></div>').addClass(`newTweed`);
+  const result = `@${tweed.user}: ${tweed.message}`;
+  $newITweed.text(result).append(` | posted: ${moment().startOf('hour').fromNow()}`)
   console.log(tweed);
-window.visitor = user; 
-writeTweet(tweed);
-return tweed; 
+//window.visitor = user; 
+//writeTweet(tweed);
 
-
+$bodyDiv.prepend($newITweed); 
+return tweed;
+  });
 });
+// $('.user').on('click', (event) => {
+//   userTimeline(event.target.text);
+// });
 // console.log(tweed);
 });
