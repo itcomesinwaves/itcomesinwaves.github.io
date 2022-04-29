@@ -1,16 +1,24 @@
 
+
 $(document).ready(() => {
+  var currentdate = new Date(); 
+  var datetime = currentdate.getDate() + "/"
+              + (currentdate.getMonth()+1)  + "/"   
+              + currentdate.getHours() + ":"  
+              + currentdate.getMinutes() + ":" 
+              + currentdate.getSeconds();
+//dates
   const $body = $('body');
   $body.html('');
   const $bodyDiv = $('<div>').attr('id', 'new-tweed-div').addClass('div1');
   $body.append($bodyDiv);
   
   const $tweets = streams.home.map((tweet) => {
-    const $tweet = $('<div></div>').addClass('tweetdiv')
+    const $tweet = $('<div></div>').addClass('newTweed')
    //$('.tweetdiv').append(` posted: ${moment().format('LLL')}`);
     const text = `@${tweet.user}: ${tweet.message}`;
 
-    $tweet.text(text).append(` | posted: ${moment().startOf('minute').fromNow()}`)
+    $tweet.text(text).append(` | posted: ${moment().startOf('minute').fromNow()} @${datetime}`)
 
     $bodyDiv.prepend($tweet)
     return $tweet;
@@ -28,14 +36,13 @@ $(document).ready(() => {
   //var readableDate = moment().format('LTS').startOf('minute').fromNow();
 
   // var currentdate = new Date(); 
-  //   var datetime = "Tweeded: " + currentdate.getDate() + "/"
-  //               + (currentdate.getMonth()+1)  + "/" 
-  //               + currentdate.getFullYear() + " @ "  
+  //   var datetime = currentdate.getDate() + "/"
+  //               + (currentdate.getMonth()+1)  + "/"   
   //               + currentdate.getHours() + ":"  
   //               + currentdate.getMinutes() + ":" 
   //               + currentdate.getSeconds();
-// dates
- $('#new-tweed-div').append(` posted: ${moment().format('LLL')}`);
+//dates
+ //$('#new-tweed-div').append(` posted: ${moment().format('LTS').startOf('minute').fromNow()}`);
 $('.div1').css('color', 'white').css('font', 'bold').css('font-size', '40px');
 $(document.body).css("background-image", "url(" + 'https://i.gifer.com/embedded/download/NJbB.gif' + ")");
 $('#twiddler-heading').css('color', 'purple').css('font', 'bold').css('font-size', '40px');
@@ -46,6 +53,8 @@ $('#first-paragraph').css('color', 'purple').css('font', 'bold').css('font-size'
  // add paragraph to header
  const $p1 = $('<p>').attr('id', 'first-paragraph').addClass('paragraph').text('Nooo, this is NOT Twitter, stop asking!');
 $h1.append($p1);
+// create clickable div 
+
 // create refresh tweets button
 $h1.append(
   $(document.createElement('button')).prop({
@@ -53,27 +62,29 @@ $h1.append(
       innerHTML: 'New Tweeds',
       class: 'btn-styled',
 }))
-$('.btn-styled').css('color', 'navy');
+$('.btn-styled ').css('color', 'navy');
 
 
 $('.btn-styled').on('click', (e) => { 
   console.log("hey");
   $bodyDiv.html('');
   const $newTweeds =  streams.home.map((tweed) => {
-  const $newTweed = $('<div></div>').addClass(`newTweed`)
+  const $newTweed = $('<div></div>').addClass(`newTweed ${tweed.user}`);
   const result = `@${tweed.user}: ${tweed.message}`;
 
-  $newTweed.text(result).append(` | posted: ${moment().startOf('minute').fromNow()}`)
+  $newTweed.text(result).append(` | posted: ${moment().startOf('minute').fromNow()} @${datetime}`);
   $bodyDiv.prepend($newTweed);
   return $newTweed;
  
 });
 
+
+})
 // dates 
 //$newTweeds.insertAfer($p1);
 //$bodyDiv.append($newTweeds);
 //$('.newTweed').append(` | posted: ${moment().startOf('hour').fromNow()}`);
-})
+//})
  // add input username form and submit button to store 
 //  const $formUser = $('<form></form>').attr('id', 'form-user');
 //  $formUser.append('<input type="text" value="">').attr('id', 'formUser');
@@ -113,27 +124,58 @@ console.log(user);
 //});
 
 // console.log(user);
+
 //add funcitonality to the click for tweeds inputs and then after concantenating with the user, store it into a tweeed var then pass it in to the writeTweet function
-$('#button2').on('click', (event) => {
-  event.preventDefault();
-  window.visitor = user;
-  var tweedInput = $( "#form :input" ).first().val();
-  writeTweet(tweedInput);
-  const $newITweeds =  streams.home.map((tweed) => {
+// $('#button2').on('click', (event) => {
+//   event.preventDefault();
+//   window.visitor = user;
+//   var tweedInput = $( "#form :input" ).first().val();
+//   writeTweet(tweedInput);
+//   const $newITweeds =  streams.home.map((tweed) => {
 
-  const $newITweed = $('<div></div>').addClass(`newTweed`);
-  const result = `@${tweed.user}: ${tweed.message}`;
-  $newITweed.text(result).append(` | posted: ${moment().startOf('minute').fromNow()}`)
-  console.log(tweed);
-//window.visitor = user; 
-//writeTweet(tweed);
+//   const $newITweed = $('<div></div>').addClass(`newTweed ${tweed.user}`);
+//   const result = `@${tweed.user}: ${tweed.message}`;
+//   $newITweed.text(result).append(` | posted: ${moment().startOf('minute').fromNow()} @${datetime}`)
+//   console.log(tweed);
+// //window.visitor = user; 
+// //writeTweet(tweed);
 
-$bodyDiv.prepend($newITweed); 
-return tweed;
-  });
-});
-// $('.user').on('click', (event) => {
-//   userTimeline(event.target.text);
+// $bodyDiv.prepend($newITweed); 
+// return tweed;
+//   });
 // });
-// console.log(tweed);
+
+
+$('#new-tweed-div').on('click', (event) => { 
+  let currentDiv = event.target.closest('div');
+  let innerText = currentDiv.innerHTML;
+  let textArr = innerText.split(' ');
+  let isolatedUserName = textArr[0].slice(1, textArr[0].length - 1);
+
+  $bodyDiv.html('');
+  let friends = streams.users[isolatedUserName];
+  const $filteredTweeds =  friends.map((tweed) => {
+    console.log(tweed.user);
+ //if (tweed.user === isolatedUserName) {
+   console.log(tweed);
+
+
+   
+    const $newFiltTweed = $('<div></div>').addClass(`newTweed ${tweed.user}`);
+    const filteredMessages = `@${tweed.user}: ${tweed.message}`;
+   
+    $newFiltTweed.text(filteredMessages).append(` | posted: ${moment().startOf('minute').fromNow()} @${datetime}`);
+    $bodyDiv.prepend($newFiltTweed);
+    
+
+      return $newFiltTweed;
+   // } 
+  })
+
+});
+
+
+
+
+
 });
